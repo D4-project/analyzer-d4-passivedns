@@ -1,0 +1,530 @@
+[
+  {
+    "type": "A",
+    "value": "1",
+    "description": "a host address",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "NS",
+    "value": "2",
+    "description": "an authoritative name server",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MD",
+    "value": "3",
+    "description": "a mail destination (OBSOLETE - use MX)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MF",
+    "value": "4",
+    "description": "a mail forwarder (OBSOLETE - use MX)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "CNAME",
+    "value": "5",
+    "description": "the canonical name for an alias",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "SOA",
+    "value": "6",
+    "description": "marks the start of a zone of authority",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MB",
+    "value": "7",
+    "description": "a mailbox domain name (EXPERIMENTAL)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MG",
+    "value": "8",
+    "description": "a mail group member (EXPERIMENTAL)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MR",
+    "value": "9",
+    "description": "a mail rename domain name (EXPERIMENTAL)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "NULL",
+    "value": "10",
+    "description": "a null RR (EXPERIMENTAL)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "WKS",
+    "value": "11",
+    "description": "a well known service description",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "PTR",
+    "value": "12",
+    "description": "a domain name pointer",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "HINFO",
+    "value": "13",
+    "description": "host information",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MINFO",
+    "value": "14",
+    "description": "mailbox or mail list information",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "MX",
+    "value": "15",
+    "description": "mail exchange",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "TXT",
+    "value": "16",
+    "description": "text strings",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "RP",
+    "value": "17",
+    "description": "for Responsible Person",
+    "ref": "[RFC1183]"
+  },
+  {
+    "type": "AFSDB",
+    "value": "18",
+    "description": "for AFS Data Base location",
+    "ref": "[RFC1183][RFC5864]"
+  },
+  {
+    "type": "X25",
+    "value": "19",
+    "description": "for X.25 PSDN address",
+    "ref": "[RFC1183]"
+  },
+  {
+    "type": "ISDN",
+    "value": "20",
+    "description": "for ISDN address",
+    "ref": "[RFC1183]"
+  },
+  {
+    "type": "RT",
+    "value": "21",
+    "description": "for Route Through",
+    "ref": "[RFC1183]"
+  },
+  {
+    "type": "NSAP",
+    "value": "22",
+    "description": "\"for NSAP address",
+    "ref": " NSAP style A record\""
+  },
+  {
+    "type": "NSAP-PTR",
+    "value": "23",
+    "description": "\"for domain name pointer",
+    "ref": " NSAP style\""
+  },
+  {
+    "type": "SIG",
+    "value": "24",
+    "description": "for security signature",
+    "ref": "[RFC4034][RFC3755][RFC2535][RFC2536][RFC2537][RFC2931][RFC3110][RFC3008]"
+  },
+  {
+    "type": "KEY",
+    "value": "25",
+    "description": "for security key",
+    "ref": "[RFC4034][RFC3755][RFC2535][RFC2536][RFC2537][RFC2539][RFC3008][RFC3110]"
+  },
+  {
+    "type": "PX",
+    "value": "26",
+    "description": "X.400 mail mapping information",
+    "ref": "[RFC2163]"
+  },
+  {
+    "type": "GPOS",
+    "value": "27",
+    "description": "Geographical Position",
+    "ref": "[RFC1712]"
+  },
+  {
+    "type": "AAAA",
+    "value": "28",
+    "description": "IP6 Address",
+    "ref": "[RFC3596]"
+  },
+  {
+    "type": "LOC",
+    "value": "29",
+    "description": "Location Information",
+    "ref": "[RFC1876]"
+  },
+  {
+    "type": "NXT",
+    "value": "30",
+    "description": "Next Domain (OBSOLETE)",
+    "ref": "[RFC3755][RFC2535]"
+  },
+  {
+    "type": "EID",
+    "value": "31",
+    "description": "Endpoint Identifier",
+    "ref": "[Michael_Patton][http://ana-3.lcs.mit.edu/~jnc/nimrod/dns.txt]"
+  },
+  {
+    "type": "NIMLOC",
+    "value": "32",
+    "description": "Nimrod Locator",
+    "ref": "[1][Michael_Patton][http://ana-3.lcs.mit.edu/~jnc/nimrod/dns.txt]"
+  },
+  {
+    "type": "SRV",
+    "value": "33",
+    "description": "Server Selection",
+    "ref": "[1][RFC2782]"
+  },
+  {
+    "type": "ATMA",
+    "value": "34",
+    "description": "ATM Address",
+    "ref": "\"[ ATM Forum Technical Committee"
+  },
+  {
+    "type": "NAPTR",
+    "value": "35",
+    "description": "Naming Authority Pointer",
+    "ref": "[RFC2915][RFC2168][RFC3403]"
+  },
+  {
+    "type": "KX",
+    "value": "36",
+    "description": "Key Exchanger",
+    "ref": "[RFC2230]"
+  },
+  {
+    "type": "CERT",
+    "value": "37",
+    "description": "CERT",
+    "ref": "[RFC4398]"
+  },
+  {
+    "type": "A6",
+    "value": "38",
+    "description": "A6 (OBSOLETE - use AAAA)",
+    "ref": "[RFC3226][RFC2874][RFC6563]"
+  },
+  {
+    "type": "DNAME",
+    "value": "39",
+    "description": "DNAME",
+    "ref": "[RFC6672]"
+  },
+  {
+    "type": "SINK",
+    "value": "40",
+    "description": "SINK",
+    "ref": "[Donald_E_Eastlake][http://tools.ietf.org/html/draft-eastlake-kitchen-sink]"
+  },
+  {
+    "type": "OPT",
+    "value": "41",
+    "description": "OPT",
+    "ref": "[RFC6891][RFC3225]"
+  },
+  {
+    "type": "APL",
+    "value": "42",
+    "description": "APL",
+    "ref": "[RFC3123]"
+  },
+  {
+    "type": "DS",
+    "value": "43",
+    "description": "Delegation Signer",
+    "ref": "[RFC4034][RFC3658]"
+  },
+  {
+    "type": "SSHFP",
+    "value": "44",
+    "description": "SSH Key Fingerprint",
+    "ref": "[RFC4255]"
+  },
+  {
+    "type": "IPSECKEY",
+    "value": "45",
+    "description": "IPSECKEY",
+    "ref": "[RFC4025]"
+  },
+  {
+    "type": "RRSIG",
+    "value": "46",
+    "description": "RRSIG",
+    "ref": "[RFC4034][RFC3755]"
+  },
+  {
+    "type": "NSEC",
+    "value": "47",
+    "description": "NSEC",
+    "ref": "[RFC4034][RFC3755]"
+  },
+  {
+    "type": "DNSKEY",
+    "value": "48",
+    "description": "DNSKEY",
+    "ref": "[RFC4034][RFC3755]"
+  },
+  {
+    "type": "DHCID",
+    "value": "49",
+    "description": "DHCID",
+    "ref": "[RFC4701]"
+  },
+  {
+    "type": "NSEC3",
+    "value": "50",
+    "description": "NSEC3",
+    "ref": "[RFC5155]"
+  },
+  {
+    "type": "NSEC3PARAM",
+    "value": "51",
+    "description": "NSEC3PARAM",
+    "ref": "[RFC5155]"
+  },
+  {
+    "type": "TLSA",
+    "value": "52",
+    "description": "TLSA",
+    "ref": "[RFC6698]"
+  },
+  {
+    "type": "SMIMEA",
+    "value": "53",
+    "description": "S/MIME cert association",
+    "ref": "[RFC8162]"
+  },
+  {
+    "type": "Unassigned",
+    "value": "54",
+    "description": "",
+    "ref": ""
+  },
+  {
+    "type": "HIP",
+    "value": "55",
+    "description": "Host Identity Protocol",
+    "ref": "[RFC8005]"
+  },
+  {
+    "type": "NINFO",
+    "value": "56",
+    "description": "NINFO",
+    "ref": "[Jim_Reid]"
+  },
+  {
+    "type": "RKEY",
+    "value": "57",
+    "description": "RKEY",
+    "ref": "[Jim_Reid]"
+  },
+  {
+    "type": "TALINK",
+    "value": "58",
+    "description": "Trust Anchor LINK",
+    "ref": "[Wouter_Wijngaards]"
+  },
+  {
+    "type": "CDS",
+    "value": "59",
+    "description": "Child DS",
+    "ref": "[RFC7344]"
+  },
+  {
+    "type": "CDNSKEY",
+    "value": "60",
+    "description": "DNSKEY(s) the Child wants reflected in DS",
+    "ref": "[RFC7344]"
+  },
+  {
+    "type": "OPENPGPKEY",
+    "value": "61",
+    "description": "OpenPGP Key",
+    "ref": "[RFC7929]"
+  },
+  {
+    "type": "CSYNC",
+    "value": "62",
+    "description": "Child-To-Parent Synchronization",
+    "ref": "[RFC7477]"
+  },
+  {
+    "type": "ZONEMD",
+    "value": "63",
+    "description": "message digest for DNS zone",
+    "ref": "[draft-wessels-dns-zone-digest]"
+  },
+  {
+    "type": "SPF",
+    "value": "99",
+    "description": "",
+    "ref": "[RFC7208]"
+  },
+  {
+    "type": "UINFO",
+    "value": "100",
+    "description": "",
+    "ref": "[IANA-Reserved]"
+  },
+  {
+    "type": "UID",
+    "value": "101",
+    "description": "",
+    "ref": "[IANA-Reserved]"
+  },
+  {
+    "type": "GID",
+    "value": "102",
+    "description": "",
+    "ref": "[IANA-Reserved]"
+  },
+  {
+    "type": "UNSPEC",
+    "value": "103",
+    "description": "",
+    "ref": "[IANA-Reserved]"
+  },
+  {
+    "type": "NID",
+    "value": "104",
+    "description": "",
+    "ref": "[RFC6742]"
+  },
+  {
+    "type": "L32",
+    "value": "105",
+    "description": "",
+    "ref": "[RFC6742]"
+  },
+  {
+    "type": "L64",
+    "value": "106",
+    "description": "",
+    "ref": "[RFC6742]"
+  },
+  {
+    "type": "LP",
+    "value": "107",
+    "description": "",
+    "ref": "[RFC6742]"
+  },
+  {
+    "type": "EUI48",
+    "value": "108",
+    "description": "an EUI-48 address",
+    "ref": "[RFC7043]"
+  },
+  {
+    "type": "EUI64",
+    "value": "109",
+    "description": "an EUI-64 address",
+    "ref": "[RFC7043]"
+  },
+  {
+    "type": "TKEY",
+    "value": "249",
+    "description": "Transaction Key",
+    "ref": "[RFC2930]"
+  },
+  {
+    "type": "TSIG",
+    "value": "250",
+    "description": "Transaction Signature",
+    "ref": "[RFC2845]"
+  },
+  {
+    "type": "IXFR",
+    "value": "251",
+    "description": "incremental transfer",
+    "ref": "[RFC1995]"
+  },
+  {
+    "type": "AXFR",
+    "value": "252",
+    "description": "transfer of an entire zone",
+    "ref": "[RFC1035][RFC5936]"
+  },
+  {
+    "type": "MAILB",
+    "value": "253",
+    "description": "\"mailbox-related RRs (MB",
+    "ref": " MG or MR)\""
+  },
+  {
+    "type": "MAILA",
+    "value": "254",
+    "description": "mail agent RRs (OBSOLETE - see MX)",
+    "ref": "[RFC1035]"
+  },
+  {
+    "type": "*",
+    "value": "255",
+    "description": "A request for some or all records the server has available",
+    "ref": "[RFC1035][RFC6895][RFC8482]"
+  },
+  {
+    "type": "URI",
+    "value": "256",
+    "description": "URI",
+    "ref": "[RFC7553]"
+  },
+  {
+    "type": "CAA",
+    "value": "257",
+    "description": "Certification Authority Restriction",
+    "ref": "[RFC6844]"
+  },
+  {
+    "type": "AVC",
+    "value": "258",
+    "description": "Application Visibility and Control",
+    "ref": "[Wolfgang_Riedel]"
+  },
+  {
+    "type": "DOA",
+    "value": "259",
+    "description": "Digital Object Architecture",
+    "ref": "[draft-durand-doa-over-dns]"
+  },
+  {
+    "type": "TA",
+    "value": "32768",
+    "description": "DNSSEC Trust Authorities",
+    "ref": "\"[Sam_Weiler][http://cameo.library.cmu.edu/][ Deploying DNSSEC Without a Signed Root.  Technical Report 1999-19"
+  },
+  {
+    "type": "DLV",
+    "value": "32769",
+    "description": "DNSSEC Lookaside Validation",
+    "ref": "[RFC4431]"
+  },
+  {
+    "type": "Reserved",
+    "value": "65535",
+    "description": "",
+    "ref": ""
+  }
+]
