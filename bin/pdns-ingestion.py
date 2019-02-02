@@ -2,8 +2,20 @@ import re
 import redis
 import fileinput
 import json
+import configparser
+import time
 
+config = configparser.RawConfigParser()
+config.read('../etc/analyzer.conf')
+
+myuuid = config.get('global', 'my-uuid')
+myqueue = "analyzer:8:{}".format(myuuid)
+print (myqueue)
+d4_server = config.get('global', 'd4-server')
 r = redis.Redis(host="127.0.0.1",port=6400)
+
+r_d4 = redis.Redis(host=d4_server.split(':')[0], port=d4_server.split(':')[1], db=2)
+
 
 with open('../etc/records-type.json') as rtypefile:
     rtype = json.load(rtypefile)
@@ -43,7 +55,13 @@ def process_format_passivedns(line=None):
 
 
 
-for l in fileinput.input('-'):
+#for l in fileinput.input('-'):
+while (True):
+    d4_record_line =  r_d4.rpop(myqueue)
+    if d4_record_line is None:
+        time.sleep (1)
+        continue
+    l = d4_record_line.decode('utf-8')
     rdns = process_format_passivedns(line=l.strip())
     print (rdns)
     if rdns is False:
@@ -70,6 +88,8 @@ for l in fileinput.input('-'):
             r.hincrby('dist:ttl', rdns['ttl'], amount=1)
         if 'class' in rdns:
             r.hincrby('dist:class', rdns['class'], amount=1)
+        if 'type' in rdns:
+            r.hincrby('dist:type', rdns['type'], amount=1)
         if stats:
             r.incrby('stats:processed', amount=1)
         print (last)
