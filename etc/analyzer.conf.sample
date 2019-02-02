@@ -1,3 +1,5 @@
 [global]
 my-uuid = 6a2461ce-c29d-44fc-b4fa-947d68826639
 d4-server = 127.0.0.1:6380
+# INFO|DEBUG
+logging-level = INFO

@@ -4,16 +4,31 @@ import fileinput
 import json
 import configparser
 import time
+import logging
+import sys
 
 config = configparser.RawConfigParser()
 config.read('../etc/analyzer.conf')
 
 myuuid = config.get('global', 'my-uuid')
 myqueue = "analyzer:8:{}".format(myuuid)
-print (myqueue)
+mylogginglevel = config.get('global', 'logging-level')
+logger = logging.getLogger('pdns ingestor')
+ch = logging.StreamHandler()
+if mylogginglevel == 'DEBUG':
+    logger.setLevel(logging.DEBUG)
+    ch.setLevel(logging.DEBUG)
+elif mylogginglevel == 'INFO':
+    logger.setLevel(logging.INFO)
+    ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
+logger.info("Starting and using FIFO {} from D4 server".format(myqueue))
+
 d4_server = config.get('global', 'd4-server')
 r = redis.Redis(host="127.0.0.1",port=6400)
-
 r_d4 = redis.Redis(host=d4_server.split(':')[0], port=d4_server.split(':')[1], db=2)
 
 
@@ -63,7 +78,7 @@ while (True):
         continue
     l = d4_record_line.decode('utf-8')
     rdns = process_format_passivedns(line=l.strip())
-    print (rdns)
+    logger.debug((rdns))
     if rdns is False:
     # need to add logging when it fails
         continue
@@ -92,7 +107,6 @@ while (True):
             r.hincrby('dist:type', rdns['type'], amount=1)
         if stats:
             r.incrby('stats:processed', amount=1)
-        print (last)
-    print (query)
     if not r:
+        logger.info('empty passive dns record')
         continue
