@@ -100,7 +100,6 @@ def getAssociatedRecords(rdata = None):
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
             qrec = rec+":{}".format(rr['Value'])
-            print (qrec)
             if r.smembers(qrec):
                 for v in r.smembers(qrec):
                     records.append(v.decode(encoding='UTF-8'))
@@ -133,7 +132,7 @@ class InfoHandler(tornado.web.RequestHandler):
 
 class QueryHandler(tornado.web.RequestHandler):
     def get(self, q):
-        print ("query: "+q)
+        print ("query: {}".format(q))
         if iptools.ipv4.validate_ip(q) or iptools.ipv6.validate_ip(q):
             for x in getAssociatedRecords(q):
                 self.write(JsonQOF(getRecord(x)))
