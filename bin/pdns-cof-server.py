@@ -24,14 +24,14 @@ rrset = [{"Reference": "[RFC1035]", "Type": "A", "Value": "1", "Meaning": "a hos
 
 r=redis.StrictRedis(host='localhost', port=6400, db=0)
 
-rrset_supported = ['1','2','5','15','28','33']
+rrset_supported = ['1','2','5','15','28','33', '46']
 
 origin = "origin not configured"
 
 def getFirstSeen(t1 = None, t2 = None):
     if t1 is None or t2 is None:
         return False
-    rec = "s:"+t1.lower()+":"+t2.lower()
+    rec = "s:{}:{}".format(t1.lower(),t2.lower())
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
             qrec = rec+":{}".format(rr['Value'])
@@ -42,7 +42,7 @@ def getFirstSeen(t1 = None, t2 = None):
 def getLastSeen(t1 = None, t2 = None):
     if t1 is None or t2 is None:
         return False
-    rec = "l:"+t1.lower()+":"+t2.lower()
+    rec = "l:{}:{}".format(t1.lower(),t2.lower())
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
             qrec = rec+":{}".format(rr['Value'])
@@ -53,7 +53,7 @@ def getLastSeen(t1 = None, t2 = None):
 def getCount(t1 = None, t2 = None):
     if t1 is None or t2 is None:
         return False
-    rec = "o:"+t1.lower()+":"+t2.lower()
+    rec = "o:{}:{}".format(t1.lower(),t2.lower())
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
             qrec = rec+":{}".format(rr['Value'])
@@ -67,7 +67,7 @@ def getRecord(t = None):
     rrfound = []
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
-            rec = "r:"+t+":"+rr['Value']
+            rec = "r:{}:{}".format(t,rr['Value'])
             setsize = r.scard(rec)
             if setsize < 200:
                 rs = r.smembers(rec)
