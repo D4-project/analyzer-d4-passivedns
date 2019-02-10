@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+#
+# pdns-ingestion is the D4 analyzer for the Passive DNS backend.
+#
+# This software parses input (via a Redis list) from a D4 server and
+# ingest it into a redis compliant server to server the records for
+# the passive DNS at later stage.
+#
+# This software is part of the D4 project.
+#
+# The software is released under the GNU Affero General Public version 3.
+#
+# Copyright (c) 2019 Alexandre Dulaunoy - a@foo.be
+# Copyright (c) Computer Incident Response Center Luxembourg (CIRCL)
+
+
 import re
 import redis
 import fileinput
@@ -69,8 +85,6 @@ def process_format_passivedns(line=None):
     return record
 
 
-
-#for l in fileinput.input('-'):
 while (True):
     d4_record_line =  r_d4.rpop(myqueue)
     if d4_record_line is None:
@@ -78,7 +92,7 @@ while (True):
         continue
     l = d4_record_line.decode('utf-8')
     rdns = process_format_passivedns(line=l.strip())
-    logger.debug((rdns))
+    logger.debug("parsed record: {}".format(rdns))
     if rdns is False:
     # need to add logging when it fails
         continue
@@ -86,19 +100,27 @@ while (True):
         continue
     if rdns['q'] and rdns['type']:
         query = "r:{}:{}".format(rdns['q'],rdns['type'])
+        logger.debug('redis sadd: {} -> {}'.format(query,rdns['v']))
         r.sadd(query, rdns['v'])
+
         res = "v:{}:{}".format(rdns['v'], rdns['type'])
+        logger.debug('redis sadd: {} -> {}'.format(res,rdns['q']))
         r.sadd(res, rdns['q'])
+
         firstseen = "s:{}:{}:{}".format(rdns['q'], rdns['v'], rdns['type'])
         if not r.exists(firstseen):
             r.set(firstseen, rdns['timestamp'])
+            logger.debug('redis set: {} -> {}'.format(firstseen, rdns['timestamp']))
         lastseen = "l:{}:{}:{}".format(rdns['q'], rdns['v'], rdns['type'])
         last = r.get(lastseen)
         if last is None or int(last) < int(rdns['timestamp']):
             r.set(lastseen, rdns['timestamp'])
+            logger.debug('redis set: {} -> {}'.format(lastseen, rdns['timestamp']))
         occ = "o:{}:{}:{}".format(rdns['q'], rdns['v'], rdns['type'])
         r.incr(occ, amount=1)
-        # TTL distribution stats
+
+
+        # TTL, Class, DNS Type distribution stats
         if 'ttl' in rdns:
             r.hincrby('dist:ttl', rdns['ttl'], amount=1)
         if 'class' in rdns:
