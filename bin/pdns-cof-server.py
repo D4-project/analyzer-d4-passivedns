@@ -7,9 +7,14 @@
 #
 # https://tools.ietf.org/html/draft-dulaunoy-dnsop-passive-dns-cof
 #
-# The software is licensed under the GNU Affero General Public License version 3
+# This software is part of the D4 project.
+#
+# The software is released under the GNU Affero General Public version 3.
 #
 # Copyright (c) 2013-2019 Alexandre Dulaunoy - a@foo.be
+# Copyright (c) 2019 Computer Incident Response Center Luxembourg (CIRCL)
+
+
 
 from datetime import date
 import tornado.escape
@@ -24,7 +29,9 @@ rrset = [{"Reference": "[RFC1035]", "Type": "A", "Value": "1", "Meaning": "a hos
 
 r=redis.StrictRedis(host='localhost', port=6400, db=0)
 
-rrset_supported = ['1','2','5','15','28','33', '46']
+rrset_supported = ['1','2','5','15','16','28','33','46']
+expiring_type = ['16']
+
 
 origin = "origin not configured"
 
