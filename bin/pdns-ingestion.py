@@ -99,6 +99,8 @@ while (True):
     if 'q' not in rdns:
         continue
     if rdns['q'] and rdns['type']:
+        if rdns['type'] == '16':
+            rdns['v'] = rdns['v'].replace("\"", "", 1)
         query = "r:{}:{}".format(rdns['q'],rdns['type'])
         logger.debug('redis sadd: {} -> {}'.format(query,rdns['v']))
         r.sadd(query, rdns['v'])
