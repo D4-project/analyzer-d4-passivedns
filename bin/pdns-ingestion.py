@@ -105,31 +105,46 @@ while (True):
     if rdns['q'] and rdns['type']:
         for y in expirations:
             if y[0] == rdns['type']:
-                 expiration=y[1]
-            else:
-                 expiration=None
+                expiration=y[1]
         if rdns['type'] == '16':
             rdns['v'] = rdns['v'].replace("\"", "", 1)
         query = "r:{}:{}".format(rdns['q'],rdns['type'])
         logger.debug('redis sadd: {} -> {}'.format(query,rdns['v']))
         r.sadd(query, rdns['v'])
         if expiration:
+            logger.debug("Expiration {} {}".format(expiration, query))
             r.expire(query, expiration)
         res = "v:{}:{}".format(rdns['v'], rdns['type'])
         logger.debug('redis sadd: {} -> {}'.format(res,rdns['q']))
         r.sadd(res, rdns['q'])
+        if expiration:
+            logger.debug("Expiration {} {}".format(expiration, query))
+            r.expire(res, expiration)
 
         firstseen = "s:{}:{}:{}".format(rdns['q'], rdns['v'], rdns['type'])
         if not r.exists(firstseen):
             r.set(firstseen, rdns['timestamp'])
             logger.debug('redis set: {} -> {}'.format(firstseen, rdns['timestamp']))
+
+        if expiration:
+            logger.debug("Expiration {} {}".format(expiration, query))
+            r.expire(firstseen, expiration)
+
         lastseen = "l:{}:{}:{}".format(rdns['q'], rdns['v'], rdns['type'])
         last = r.get(lastseen)
         if last is None or int(last) < int(rdns['timestamp']):
             r.set(lastseen, rdns['timestamp'])
             logger.debug('redis set: {} -> {}'.format(lastseen, rdns['timestamp']))
+        if expiration:
+            logger.debug("Expiration {} {}".format(expiration, query))
+            r.expire(query, expiration)
+
         occ = "o:{}:{}:{}".format(rdns['q'], rdns['v'], rdns['type'])
         r.incr(occ, amount=1)
+        if expiration:
+            logger.debug("Expiration {} {}".format(expiration, query))
+            r.expire(occ, expiration)
+
 
 
         # TTL, Class, DNS Type distribution stats
