@@ -94,9 +94,10 @@ while (True):
     rdns = process_format_passivedns(line=l.strip())
     logger.debug("parsed record: {}".format(rdns))
     if rdns is False:
-    # need to add logging when it fails
+        logger.debug('Parsing of passive DNS line failed: {}'.format(l.strip()))
         continue
     if 'q' not in rdns:
+        logger.debug('Parsing of passive DNS line is incomplete: {}'.format(l.strip()))
         continue
     if rdns['q'] and rdns['type']:
         if rdns['type'] == '16':
