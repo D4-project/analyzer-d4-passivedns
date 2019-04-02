@@ -27,7 +27,7 @@ config = configparser.RawConfigParser()
 config.read('../etc/analyzer.conf')
 
 expirations = config.items('expiration')
-
+excludesubstrings = config.get('exclude', 'substring').split(',')
 myuuid = config.get('global', 'my-uuid')
 myqueue = "analyzer:8:{}".format(myuuid)
 mylogginglevel = config.get('global', 'logging-level')
@@ -89,7 +89,7 @@ def process_format_passivedns(line=None):
 
 while (True):
     expiration = None
-    d4_record_line =  r_d4.rpop(myqueue)
+    d4_record_line = r_d4.rpop(myqueue)
     if d4_record_line is None:
         time.sleep (1)
         continue
@@ -103,6 +103,13 @@ while (True):
         logger.debug('Parsing of passive DNS line is incomplete: {}'.format(l.strip()))
         continue
     if rdns['q'] and rdns['type']:
+        excludeflag = False
+        for exclude in excludesubstrings:
+            if exclude in rdns['q']:
+               excludeflag = True
+        if excludeflag:
+            logger.debug('Excluded {}'.format(rdns['q']))
+            continue
         for y in expirations:
             if y[0] == rdns['type']:
                 expiration=y[1]

@@ -6,3 +6,5 @@ logging-level = INFO
 [expiration]
 16 = 24000
 99 = 26000
+[exclude]
+substring = spamhaus.org,asn.cymru.com
