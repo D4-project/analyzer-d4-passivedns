@@ -62,60 +62,56 @@ stats = True
 for v in rtype:
     dnstype[(v['type'])] = v['value']
 
-while (True):
-    expiration = None
-    if not (args.filetoimport):
-        parser.print_help()
-        sys.exit(0)
-    with open(args.filetoimport) as dnsimport:
-        records = json.load(dnsimport)
+expiration = None
+if not (args.filetoimport):
+    parser.print_help()
+    sys.exit(0)
+with open(args.filetoimport) as dnsimport:
+    records = json.load(dnsimport)
 
-    print (records)
-    if records is False:
-        logger.debug('Parsing of passive DNS line failed: {}'.format(l.strip()))
+print (records)
+for rdns in records:
+    logger.debug("parsed record: {}".format(r))
+    if 'rrname' not in rdns:
+        logger.debug('Parsing of passive DNS line is incomplete: {}'.format(l.strip()))
         continue
-    for rdns in records:
-        logger.debug("parsed record: {}".format(r))
-        if 'rrname' not in rdns:
-            logger.debug('Parsing of passive DNS line is incomplete: {}'.format(l.strip()))
+    if rdns['rrname'] and rdns['rrtype']:
+        rdns['type'] = dnstype[rdns['rrtype']]
+        rdns['v'] = rdns['rdata']
+        excludeflag = False
+        for exclude in excludesubstrings:
+            if exclude in rdns['rrname']:
+               excludeflag = True
+        if excludeflag:
+            logger.debug('Excluded {}'.format(rdns['rrname']))
             continue
-        if rdns['rrname'] and rdns['rrtype']:
-            rdns['type'] = dnstype[rdns['rrtype']]
-            rdns['v'] = rdns['rdata']
-            excludeflag = False
-            for exclude in excludesubstrings:
-                if exclude in rdns['rrname']:
-                   excludeflag = True
-            if excludeflag:
-                logger.debug('Excluded {}'.format(rdns['rrname']))
-                continue
-            if rdns['type'] == '16':
-                rdns['v'] = rdns['v'].replace("\"", "", 1)
-            query = "r:{}:{}".format(rdns['rrname'],rdns['type'])
-            logger.debug('redis sadd: {} -> {}'.format(query,rdns['v']))
-            r.sadd(query, rdns['v'])
-            res = "v:{}:{}".format(rdns['v'], rdns['type'])
-            logger.debug('redis sadd: {} -> {}'.format(res,rdns['rrname']))
-            r.sadd(res, rdns['q'])
+        if rdns['type'] == '16':
+            rdns['v'] = rdns['v'].replace("\"", "", 1)
+        query = "r:{}:{}".format(rdns['rrname'],rdns['type'])
+        logger.debug('redis sadd: {} -> {}'.format(query,rdns['v']))
+        r.sadd(query, rdns['v'])
+        res = "v:{}:{}".format(rdns['v'], rdns['type'])
+        logger.debug('redis sadd: {} -> {}'.format(res,rdns['rrname']))
+        r.sadd(res, rdns['rrname'])
 
-            firstseen = "s:{}:{}:{}".format(rdns['rrname'], rdns['v'], rdns['type'])
-            if not r.exists(firstseen):
-                r.set(firstseen, rdns['time_first'])
-                logger.debug('redis set: {} -> {}'.format(firstseen, rdns['time_first']))
+        firstseen = "s:{}:{}:{}".format(rdns['rrname'], rdns['v'], rdns['type'])
+        if not r.exists(firstseen):
+            r.set(firstseen, rdns['time_first'])
+            logger.debug('redis set: {} -> {}'.format(firstseen, rdns['time_first']))
 
 
-            lastseen = "l:{}:{}:{}".format(rdns['rrname'], rdns['v'], rdns['type'])
-            last = r.get(lastseen)
-            if last is None or int(last) < int(rdns['timestamp']):
-                r.set(lastseen, rdns['time_last'])
-                logger.debug('redis set: {} -> {}'.format(lastseen, rdns['time_last']))
+        lastseen = "l:{}:{}:{}".format(rdns['rrname'], rdns['v'], rdns['type'])
+        last = r.get(lastseen)
+        if last is None or int(last) < int(rdns['time_last']):
+            r.set(lastseen, rdns['time_last'])
+            logger.debug('redis set: {} -> {}'.format(lastseen, rdns['time_last']))
 
-            occ = "o:{}:{}:{}".format(rdns['rrname'], rdns['v'], rdns['type'])
-            r.set(occ, rdns['count'])
+        occ = "o:{}:{}:{}".format(rdns['rrname'], rdns['v'], rdns['type'])
+        r.set(occ, rdns['count'])
 
 
-            if stats:
-                r.incrby('stats:processed', amount=1)
-        if not r:
-            logger.info('empty passive dns record')
-            continue
+        if stats:
+            r.incrby('stats:processed', amount=1)
+    if not r:
+        logger.info('empty passive dns record')
+        continue
