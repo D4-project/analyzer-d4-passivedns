@@ -20,6 +20,7 @@ import time
 import logging
 import sys
 import argparse
+import os
 
 parser = argparse.ArgumentParser(description='Import array of standard Passive DNS cof format into your Passive DNS server')
 parser.add_argument('--file', dest='filetoimport', help='JSON file to import')
@@ -47,8 +48,11 @@ logger.addHandler(ch)
 
 logger.info("Starting and using FIFO {} from D4 server".format(myqueue))
 
+analyzer_redis_host = os.getenv('D4_ANALYZER_REDIS_HOST', '127.0.0.1')
+analyzer_redis_port = int(os.getenv('D4_ANALYZER_REDIS_PORT', 6400))
+
 d4_server = config.get('global', 'd4-server')
-r = redis.Redis(host="127.0.0.1",port=6400)
+r = redis.Redis(host=analyzer_redis_host, port=analyzer_redis_port)
 r_d4 = redis.Redis(host=d4_server.split(':')[0], port=d4_server.split(':')[1], db=2)
 
 
