@@ -81,8 +81,7 @@ def process_format_passivedns(line=None):
     for r in v:
         # trailing dot is removed and avoid case sensitivity
         if i == 4 or i == 6:
-            r = r[:-1]
-            r = r.lower()
+            r = r.lower().strip('.')
         # timestamp is just epoch - second precision is only required
         if i == 0:
             r = r.split('.')[0]
