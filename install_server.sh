@@ -14,6 +14,7 @@ fi
 python3 -m pip install -r requirements
 
 # REDIS #
+mkdir -p db
 test ! -d redis/ && git clone https://github.com/antirez/redis.git
 pushd redis/
 git checkout 5.0
