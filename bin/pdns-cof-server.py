@@ -727,6 +727,7 @@ def getRecord(t=None):
             if setsize < 200:
                 rs = r.smembers(rec)
             else:
+                # TODO: improve with a new API end-point with SSCAN
                 # rs = r.srandmember(rec, number=300)
                 rs = False
 
@@ -784,7 +785,17 @@ def JsonQOF(rrfound=None, RemoveDuplicate=True):
 
 class InfoHandler(tornado.web.RequestHandler):
     def get(self):
+        stats = int(r.get("stats:processed"))
         response = {'version': 'git', 'software': 'analyzer-d4-passivedns'}
+        response['stats'] = stats
+        sensors = r.zrevrange('stats:sensors', 0, -1, withscores=True)
+        rsensors = []
+        for x in sensors:
+            d = dict()
+            d['sensor_id'] = x[0].decode()
+            d['count'] = int(float(x[1]))
+            rsensors.append(d)
+        response['sensors'] = rsensors
         self.write(response)
 
 
