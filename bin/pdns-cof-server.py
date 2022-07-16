@@ -683,10 +683,10 @@ origin = "origin not configured"
 def getFirstSeen(t1=None, t2=None):
     if t1 is None or t2 is None:
         return False
-    rec = "s:{}:{}".format(t1.lower(), t2.lower())
+    rec = f's:{t1.lower()}:{t2.lower()}'
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
-            qrec = rec + ":{}".format(rr['Value'])
+            qrec = f'{rec}:{rr["Value"]}'
             recget = r.get(qrec)
             if recget is not None:
                 return int(recget.decode(encoding='UTF-8'))
@@ -695,10 +695,10 @@ def getFirstSeen(t1=None, t2=None):
 def getLastSeen(t1=None, t2=None):
     if t1 is None or t2 is None:
         return False
-    rec = "l:{}:{}".format(t1.lower(), t2.lower())
+    rec = f'l:{t1.lower()}:{t2.lower()}'
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
-            qrec = rec + ":{}".format(rr['Value'])
+            qrec = f'{rec}:{rr["Value"]}'
             recget = r.get(qrec)
             if recget is not None:
                 return int(recget.decode(encoding='UTF-8'))
@@ -707,10 +707,10 @@ def getLastSeen(t1=None, t2=None):
 def getCount(t1=None, t2=None):
     if t1 is None or t2 is None:
         return False
-    rec = "o:{}:{}".format(t1.lower(), t2.lower())
+    rec = f'o:{t1.lower()}:{t2.lower()}'
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
-            qrec = rec + ":{}".format(rr['Value'])
+            qrec = f'{rec}:{rr["Value"]}'
             recget = r.get(qrec)
             if recget is not None:
                 return int(recget.decode(encoding='UTF-8'))
@@ -722,7 +722,7 @@ def getRecord(t=None):
     rrfound = []
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
-            rec = "r:{}:{}".format(t, rr['Value'])
+            rec = f'r:{t}:{rr["Value"]}'
             setsize = r.scard(rec)
             if setsize < 200:
                 rs = r.smembers(rec)
@@ -752,11 +752,11 @@ def getRecord(t=None):
 def getAssociatedRecords(rdata=None):
     if rdata is None:
         return False
-    rec = "v:" + rdata.lower()
+    rec = f'v:{rdata.lower()}'
     records = []
     for rr in rrset:
         if (rr['Value']) is not None and rr['Value'] in rrset_supported:
-            qrec = rec + ":{}".format(rr['Value'])
+            qrec = f'{rec}:{rr["Value"]}'
             if r.smembers(qrec):
                 for v in r.smembers(qrec):
                     records.append(v.decode(encoding='UTF-8'))
@@ -801,7 +801,7 @@ class InfoHandler(tornado.web.RequestHandler):
 
 class QueryHandler(tornado.web.RequestHandler):
     def get(self, q):
-        print("query: {}".format(q))
+        print(f'query: {q}')
         if iptools.ipv4.validate_ip(q) or iptools.ipv6.validate_ip(q):
             for x in getAssociatedRecords(q):
                 self.write(JsonQOF(getRecord(x)))
@@ -811,7 +811,7 @@ class QueryHandler(tornado.web.RequestHandler):
 
 class FullQueryHandler(tornado.web.RequestHandler):
     def get(self, q):
-        print("fquery: " + q)
+        print(f'fquery: {q}')
         if iptools.ipv4.validate_ip(q) or iptools.ipv6.validate_ip(q):
             for x in getAssociatedRecords(q):
                 self.write(JsonQOF(getRecord(x)))
