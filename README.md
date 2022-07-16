@@ -15,7 +15,7 @@ The package include a Passive DNS server which can be queried later to search fo
 
 ## Requirements
 
-- Python 3
+- Python 3.8
 - Redis >5.0 or [kvrocks](https://github.com/apache/incubator-kvrocks)
 - Tornado
 - iptools
